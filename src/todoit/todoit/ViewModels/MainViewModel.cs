@@ -1,17 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using todoit.Domain.Model;
 
@@ -22,7 +11,7 @@ namespace todoit.ViewModels
     {
         public MainViewModel()
         {
-            _items = new ObservableCollection<TodoList>();
+            Items = new ObservableCollection<TodoList>();
         }
 
         /// <summary>
@@ -46,19 +35,14 @@ namespace todoit.ViewModels
             }
         }
 
-        public bool IsDataLoaded
-        {
-            get;
-            private set;
-        }
-
         /// <summary>
         /// Creates and adds a few ItemViewModel objects into the Items collection.
         /// </summary>
-        public void LoadData()
+        public void GetLists()
         {
-            App.Database.Query<TodoList, Guid>().Select(tl => tl.LazyValue.Value).ToList().ForEach(Items.Add);
-            IsDataLoaded = true;
+            var items = new ObservableCollection<TodoList>();
+            App.Database.Query<TodoList, Guid>().Select(tl => tl.LazyValue.Value).ToList().ForEach(items.Add);
+            Items = items;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

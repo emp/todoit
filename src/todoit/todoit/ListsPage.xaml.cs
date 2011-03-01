@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Microsoft.Phone.Controls;
 using todoit.Domain.Model;
 
 namespace todoit
@@ -17,14 +13,13 @@ namespace todoit
         public ListsPage()
         {
             InitializeComponent();
+            DataBind();
+        }
 
-            // Set the data context of the listbox control to the sample data
+        private void DataBind()
+        {
             DataContext = App.ViewModel;
-
-            if (App.ViewModel.IsDataLoaded)
-                return;
-
-            App.ViewModel.LoadData();
+            App.ViewModel.GetLists();
         }
 
         private void AddList(object sender, RoutedEventArgs e)
@@ -47,23 +42,12 @@ namespace todoit
                 Name = textbox.Text
             };
 
-            textbox.Text = "";
+            textbox.Text = String.Empty;
 
             App.Database.Save(list);
             App.Database.Flush();
+            App.ViewModel.GetLists();
 
-            App.ViewModel.LoadData();
-
-            addPanel.Visibility = Visibility.Collapsed;
-
-        }
-
-        private void DisplayAddList(object sender, EventArgs e)
-        {
-            addPanel.Visibility = Visibility.Visible;
-            add.Focus();
         }
     }
-
-
 }

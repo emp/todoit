@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,19 +15,20 @@ namespace todoit
         public MainPage()
         {
             InitializeComponent();
-
-            // Set the data context of the listbox control to the sample data
-            DataContext = App.ViewModel;
-
-            if (App.ViewModel.IsDataLoaded)
-                return;
-
-            App.ViewModel.LoadData();
+            DataBind();
 
             // when we dont have any lists 
             // then we send the user to the List Manager
             if (!App.ViewModel.Items.Any())
                 Loaded += ManageLists;
+        }
+
+
+        private void DataBind()
+        {
+            // Set the data context of the listbox control to the sample data
+            DataContext = App.ViewModel;
+            App.ViewModel.GetLists();
         }
 
         private void CompleteTodo(object sender, RoutedEventArgs e)
@@ -78,7 +80,7 @@ namespace todoit
             textbox.Text = "";
             lists.Focus();
 
-            var todos = new List<Todo>();
+            List<Todo> todos;
 
             try
             {
@@ -86,7 +88,8 @@ namespace todoit
             }
             catch (Exception)
             {
-                //Sterling behaves weird when collections are not initialized
+                //Sterling behaves weirdly when collection references are empty
+                todos = new List<Todo>();
             }
 
             todos.Add(todo);
@@ -94,21 +97,12 @@ namespace todoit
 
             App.Database.Save(todoList);
             App.Database.Flush();
-
-            addPanel.Visibility = Visibility.Collapsed;
-
         }
 
         private void ManageLists(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/ListsPage.xaml", UriKind.Relative));
             Loaded -= ManageLists;
-        }
-
-        private void DisplayAddTodo(object sender, EventArgs e)
-        {
-            addPanel.Visibility = Visibility.Visible;
-            add.Focus();
         }
     }
 

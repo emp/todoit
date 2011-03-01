@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using todoit.Domain.Model;
 using todoit.Infrastructure.Persistance;
 using todoit.ViewModels;
 using Wintellect.Sterling;
@@ -13,7 +11,7 @@ namespace todoit
     public partial class App
     {
 
-        private static MainViewModel viewModel = null;
+        private static MainViewModel _viewModel;
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.
@@ -24,10 +22,7 @@ namespace todoit
             get
             {
                 // Delay creation of the view model until necessary
-                if (viewModel == null)
-                    viewModel = new MainViewModel();
-
-                return viewModel;
+                return _viewModel ?? (_viewModel = new MainViewModel());
             }
         }
 
@@ -166,8 +161,7 @@ namespace todoit
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
         {
             // Set the root visual to allow the application to render
-            if (RootVisual != RootFrame)
-                RootVisual = RootFrame;
+            RootVisual = RootFrame;
 
             // Remove this handler since it is no longer needed
             RootFrame.Navigated -= CompleteInitializePhoneApplication;

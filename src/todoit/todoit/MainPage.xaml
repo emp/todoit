@@ -33,7 +33,7 @@
         <controls:Pivot Title="TODOIT" ItemsSource="{Binding Items}" x:Name="lists">
             <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextTitle1Style}" />
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextTitle1Style}" MouseLeftButtonDown="ManageLists" />
                 </DataTemplate>
             </controls:Pivot.HeaderTemplate>
             <controls:Pivot.ItemTemplate>
@@ -52,7 +52,7 @@
             </controls:Pivot.ItemTemplate>
         </controls:Pivot>
 
-        <StackPanel x:Name="addPanel"  Orientation="Horizontal" Height="80" VerticalAlignment="Bottom" Visibility="Collapsed">
+        <StackPanel x:Name="addPanel"  Orientation="Horizontal" Height="80" VerticalAlignment="Bottom">
             <TextBox Width="360" Height="80" x:Name="add" />
             <Button Width="120" Height="80" Content="Add" Click="AddTodo" />
         </StackPanel>
@@ -64,7 +64,6 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Static/Images/appbar.add.rest.png" Click="DisplayAddTodo" Text="Add TODO"/>
             <shell:ApplicationBarIconButton IconUri="/Static/Images/appbar.share.rest.png" Click="ManageLists" Text="Manage Lists"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
