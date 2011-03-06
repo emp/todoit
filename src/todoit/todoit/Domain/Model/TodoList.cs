@@ -8,6 +8,6 @@ namespace todoit.Domain.Model
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Todo> Todos { get; set; }
+        public List<Todo> Todos { get; set; }
     }
 }

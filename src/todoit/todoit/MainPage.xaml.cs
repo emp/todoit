@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using todoit.Domain.Model;
 
 namespace todoit
@@ -16,11 +17,6 @@ namespace todoit
         {
             InitializeComponent();
             DataBind();
-
-            // when we dont have any lists 
-            // then we send the user to the List Manager
-            if (!App.ViewModel.Items.Any())
-                Loaded += ManageLists;
         }
 
 
@@ -63,7 +59,7 @@ namespace todoit
 
             if (textbox.Text.Length == 0)
             {
-                MessageBox.Show("TODOs are like pets, they need a name!");
+                MessageBox.Show("Please provider a name for your item ...or are you trying \"todo\" nothing?");
                 textbox.Focus();
                 return;
             }
@@ -97,12 +93,68 @@ namespace todoit
 
             App.Database.Save(todoList);
             App.Database.Flush();
+            App.ViewModel.GetLists();
         }
 
-        private void ManageLists(object sender, EventArgs e)
+        private void SaveList(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/ListsPage.xaml", UriKind.Relative));
-            Loaded -= ManageLists;
+            var button = (Button)sender;
+            var panel = (StackPanel)button.Parent;
+            var textbox = panel.Children.OfType<TextBox>().FirstOrDefault();
+
+            if (textbox.Text.Length == 0)
+            {
+                MessageBox.Show("Please provide a short, remarkable name to your list!");
+                textbox.Focus();
+                return;
+            }
+
+            var list = new TodoList
+            {
+                Id = Guid.NewGuid(),
+                Created = DateTime.Now,
+                Name = textbox.Text
+            };
+
+            textbox.Text = String.Empty;
+
+            App.Database.Save(list);
+            App.Database.Flush();
+            App.ViewModel.GetLists();
+
+            //.SelectedItem = list;
+        }
+
+        private void EditList(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void DisplayEditList(object sender, RoutedEventArgs e)
+        {
+            var text = (TextBlock)sender;
+            var panel = (StackPanel)text.Parent;
+            var inner = panel.Children.OfType<StackPanel>().FirstOrDefault();
+            var list = (TodoList)lists.SelectedItem;
+
+            addPanel.Visibility = Visibility.Visible;
+
+            if (list.Name == "<new list>")
+            {
+                inner.Visibility = Visibility.Visible;
+                addPanel.Children.OfType<TextBox>().FirstOrDefault().Focus();
+            }
+            else
+            {
+                inner.Visibility = Visibility.Collapsed;
+            }
+
+        }
+
+        private void SetListName(object sender, RoutedEventArgs e)
+        {
+            var text = (TextBox)sender;
+            //text.Focus();
         }
     }
 

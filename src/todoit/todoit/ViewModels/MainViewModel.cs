@@ -41,7 +41,18 @@ namespace todoit.ViewModels
         public void GetLists()
         {
             var items = new ObservableCollection<TodoList>();
+            //App.Database.Purge();
             App.Database.Query<TodoList, Guid>().Select(tl => tl.LazyValue.Value).ToList().ForEach(items.Add);
+            
+            // this basic item will reduce a ton of extra UI paths
+            // by always having a new List available for quick inserts.
+            items.Add(new TodoList
+            {
+                Created = DateTime.Now,
+                Id = Guid.NewGuid(),
+                Name = "<new list>"
+            });
+
             Items = items;
         }
 

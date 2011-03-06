@@ -64,9 +64,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ListsPage.xaml.cs">
-      <DependentUpon>ListsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Domain\Model\Todo.cs" />
     <Compile Include="Domain\Model\TodoList.cs" />
     <Compile Include="Infrastructure\Persistance\TodoStore.cs" />
@@ -81,10 +78,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="ListsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

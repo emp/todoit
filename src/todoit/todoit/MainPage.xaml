@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignData MainViewModelSampleData.xaml}"
     d:Todos="{d:DesignData MainViewModelSampleData.xaml}"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -30,10 +30,16 @@
             </ListBox.ItemTemplate>
         </ListBox>-->
 
-        <controls:Pivot Title="TODOIT" ItemsSource="{Binding Items}" x:Name="lists">
+        <controls:Pivot Title="TODOIT" ItemsSource="{Binding Items}" x:Name="lists" Margin="0,0,0,86" >
             <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextTitle1Style}" MouseLeftButtonDown="ManageLists" />
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextTitle1Style}" MouseLeftButtonDown="EditList" Loaded="DisplayEditList" />
+                        <StackPanel x:Name="addPanel"  Orientation="Horizontal" Height="80" Visibility="Collapsed">
+                            <TextBox Width="320" Height="80" x:Name="add" Loaded="SetListName" />
+                            <Button Width="140" Height="80" Content="Save" Click="SaveList" />
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </controls:Pivot.HeaderTemplate>
             <controls:Pivot.ItemTemplate>
@@ -52,20 +58,11 @@
             </controls:Pivot.ItemTemplate>
         </controls:Pivot>
 
-        <StackPanel x:Name="addPanel"  Orientation="Horizontal" Height="80" VerticalAlignment="Bottom">
+        <StackPanel x:Name="addPanel"  Orientation="Horizontal" Height="80" VerticalAlignment="Bottom" Visibility="Visible">
             <TextBox Width="360" Height="80" x:Name="add" />
             <Button Width="120" Height="80" Content="Add" Click="AddTodo" />
         </StackPanel>
 
     </Grid>
-
- 
-    
-    <!--Sample code showing usage of ApplicationBar-->
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Static/Images/appbar.share.rest.png" Click="ManageLists" Text="Manage Lists"/>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>
